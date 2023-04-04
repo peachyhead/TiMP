@@ -1,2 +1,6 @@
 # Project exclude paths
 /out/
+.idea/vcs.xml
+.idea/uiDesigner.xml
+.idea/libraries/lib.xml
+.idea/libraries/._lib.xml

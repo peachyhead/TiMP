@@ -3,9 +3,11 @@ package scripts.debug;
 
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import scripts.base.observer.IObserver;
 import scripts.base.observer.TimerObservable;
+import scripts.utils.Formatter;
 
 import java.time.LocalDateTime;
 
@@ -16,41 +18,41 @@ public class TimerPresenter implements IObserver {
 
     private final TimerObservable timerObservable;
 
-    private final Group root;
-    private final StackPane layer;
-    private int seconds = 0;
-    private int minutes = 0;
-    private int hours = 0;
+    private final Pane root;
+    private final Pane layer;
+    //private final StackPane layer;
+    //private long seconds = 0;
+    //private long minutes = 0;
+    //private long hours = 0;
 
-    private String formattedLabel = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    //private String formattedLabel = String.format("%02d:%02d:%02d", hours, minutes, seconds);
 
-    public TimerPresenter(Group root, TimerObservable observable) {
+    public TimerPresenter(Pane root, TimerObservable observable) {
         this.root = root;
         layer = new StackPane();
         timeLabel = new Label();
 
         timerObservable = observable;
-        timeLabel.setText(formattedLabel);
+        timeLabel.setText("00:00:000");
 
         layer.getChildren().add(timeLabel);
+        root.getChildren().add(layer);
     }
     @Override
-    public void handleEvent(LocalDateTime value) {
+    public void handleEvent(long value) {
         if (timeLabel == null) return;
 
-        hours = value.getHour();
-        minutes = value.getMinute();
-        seconds = value.getSecond();
 
-        formattedLabel = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        timeLabel.setText(formattedLabel);
+        timeLabel.setText(Formatter.getFormattedTime(value));
     }
 
     public void Show() {
-        root.getChildren().add(layer);
+        //root.getChildren().add(layer);
+        layer.setVisible(true);
     }
 
     public void Hide(){
-        root.getChildren().remove(layer);
+        //root.getChildren().remove(layer);
+        layer.setVisible(false);
     }
 }

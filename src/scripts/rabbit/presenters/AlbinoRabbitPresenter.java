@@ -13,7 +13,8 @@ public class AlbinoRabbitPresenter extends RabbitPresenter {
     }
 
     @Override
-    public void dispose() {
-
+    public void dispose(){
+        super.dispose();
     }
+
 }

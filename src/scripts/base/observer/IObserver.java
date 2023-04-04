@@ -5,5 +5,5 @@ import java.time.LocalDateTime;
 
 public interface IObserver {
 
-    public void handleEvent(LocalDateTime value);
+    public void handleEvent(long value);
 }

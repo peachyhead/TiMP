@@ -1,6 +1,7 @@
 package scripts.rabbit.base;
 
 import com.sun.media.jfxmediaimpl.MediaDisposer;
+import javafx.application.Platform;
 import scripts.base.presenter.SpritePresenter;
 import scripts.behaviour.interfaces.IBehaviour;
 import javafx.scene.image.Image;
@@ -15,7 +16,14 @@ public abstract class RabbitPresenter extends SpritePresenter implements MediaDi
         super(layer, image, model.position);
         this.model = model;
 
-        model.disposeEvent = actionEvent -> dispose();
+        model.setOnDisposeAction(new RabbitModel.IOnDisposeAction() {
+            @Override
+            public void handle() {
+
+                dispose();
+            }
+        });
+        //model.disposeEvent = actionEvent -> dispose();
     }
     public void AttachData(IBehaviour behaviour) {
         this.behaviour = behaviour;
@@ -23,6 +31,8 @@ public abstract class RabbitPresenter extends SpritePresenter implements MediaDi
 
     @Override
     public void dispose() {
-        this.removeFromLayer();
+
+        removeFromLayer();
+
     }
 }

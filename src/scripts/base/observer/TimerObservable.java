@@ -1,20 +1,26 @@
 package scripts.base.observer;
 
+import scripts.base.IResetable;
+import scripts.habitat.HabitatController;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimerObservable implements IObservable {
-    private Timestamp timestamp;
+public class TimerObservable implements IObservable, IResetable {
+    //private Timestamp timestamp;
+    private long simulationTime;
+
     private final List<IObserver> observers = new ArrayList<>();
 
-    public TimerObservable() {
-        timestamp = new Timestamp(0);
+    public TimerObservable(HabitatController habitatController) {
+        simulationTime = 0;
+
     }
 
     public void updateValue(long value) {
-        timestamp.setTime(value);
+        simulationTime = value;
         notifyObservers();
     }
 
@@ -31,9 +37,15 @@ public class TimerObservable implements IObservable {
     @Override
     public void notifyObservers() {
         for (var observer : observers) {
-            observer.handleEvent(timestamp.toLocalDateTime());
+            observer.handleEvent(simulationTime);
         }
     }
 
-    public LocalDateTime getTime() { return timestamp.toLocalDateTime(); }
+    //public LocalDateTime getTime() { return timestamp.toLocalDateTime(); }
+    public long getSimulationTime() { return simulationTime; }
+
+    @Override
+    public void handleReset() {
+        simulationTime = 0;
+    }
 }

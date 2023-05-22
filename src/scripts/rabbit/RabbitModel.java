@@ -6,11 +6,16 @@ import javafx.event.EventHandler;
 import scripts.rabbit.data.RabbitType;
 
 public class RabbitModel {
+    @FunctionalInterface
+    public interface IOnDisposeAction{
+        void handle();
+    }
 
     public RabbitType rabbitType;
     public Vec2f position;
 
-    public EventHandler<ActionEvent> disposeEvent;
+    //public EventHandler<ActionEvent> disposeEvent;
+    private IOnDisposeAction onDisposeAction;
 
     public RabbitModel(RabbitType type, Vec2f position){
 
@@ -18,7 +23,11 @@ public class RabbitModel {
         this.position = position;
     }
 
+    public void setOnDisposeAction(IOnDisposeAction onDisposeAction) {
+        this.onDisposeAction = onDisposeAction;
+    }
+
     public void Dispose() {
-        disposeEvent.notifyAll();
+        onDisposeAction.handle();
     }
 }

@@ -1,11 +1,14 @@
 import config.SimulationConfig;
 import javafx.animation.AnimationTimer;
+import javafx.scene.layout.VBox;
 import scripts.debug.HabitatStatsPresenter;
 import scripts.habitat.HabitatController;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.util.Date;
 
 public class Application extends javafx.application.Application {
 
@@ -52,19 +55,26 @@ public class Application extends javafx.application.Application {
     }
 
     private void Initialize(Stage stage) {
+        var vbox = new VBox();
+        vbox.setFillWidth(false);
+        root.getChildren().add(vbox);
+
         habitatController = new HabitatController(stage, simulationLayer);
-        habitatStatsPresenter = new HabitatStatsPresenter(root, habitatController,
+        habitatStatsPresenter = new HabitatStatsPresenter(vbox, habitatController,
                 habitatController.getTimerChangeObservable());
         habitatStatsPresenter.Initialize();
 
-        var animationTimer = new AnimationTimer() {
+        habitatController.setHabitatStatsPresenter(habitatStatsPresenter);
+
+        /*var animationTimer = new AnimationTimer() {
+
             @Override
             public void handle(long l) {
                 habitatController.Update(l);
             }
         };
 
-        animationTimer.start();
+        animationTimer.start();*/
     }
 
     private void HandleTimerVisible(){
